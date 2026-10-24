@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BBBBBlog · Putus Blog</title>
+<meta name="description" content="Putus 天天的Blog，筛选俺的笔记库。 为什么又做Blog。1.半个保持持续学习。2.本地笔记库需要筛选。 写字的地方。 放进来的都是旧东西：一个梦，一段路，临过的帖，修不好…">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+:root {
+  --sky-top: #f9dfc8;
+  --sky-low: #e8a684;
+  --ridge-far: #d9a58c;
+  --ridge-mid: #bd7c63;
+  --ridge-near: #96594a;
+  --ridge-front: #382422;
+  --tree-near: #7d4639;
+  --tree-front: #2f1f1d;
+  --accent: #7d5b43;
+}
+</style>
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="is-post">
+<header class="site">
+  <a class="brand" href="../index.html">Putus Blog</a>
+  <nav>
+    <a href="../index.html">文章</a>
+    <a href="../about.html">关于</a>
+  </nav>
+</header>
+<main>
+<article class="post">
+  <header>
+    <h1>BBBBBlog</h1>
+    <p class="meta"><time datetime="2026-10-24">2026年10月24日</time></p>
+  </header>
+  <div class="prose">
+<h1>Putus</h1>
+<blockquote>
+<p>天天的Blog，筛选俺的笔记库。</p>
+</blockquote>
+<p>为什么又做Blog。<br>1.半个保持持续学习。<br>2.本地笔记库需要筛选。</p>
+<p>写字的地方。</p>
+<p>放进来的都是旧东西：一个梦，一段路，临过的帖，修不好的设备。把乱的理成顺的。</p>
+<h2>仓库</h2>
+<p>一个静态博客。没有框架，没有依赖：Markdown 放在 <code>posts/</code>，一个 Node 脚本把它们拼成 <code>docs/</code>，交给 GitHub Pages。</p>
+<p><strong>和笔记库没有关系。</strong> 笔记库是给自己看的，很杂，不对外；这里只放挑出来的。</p>
+<h2>写什么</h2>
+<ul>
+<li><strong>梦</strong>。记得清的梦都写下来。醒来先记草稿，隔几天再改，一个梦写两三稿是常事。写下来就够了，不解释。</li>
+<li><strong>日课</strong>。临帖、刻章、英语、手账。</li>
+<li><strong>技术</strong>。踩过的坑，修好的东西，留个记录，省得下次再踩。</li>
+</ul>
+<p>以上是这么打算。</p>
+<h2>目录</h2>
+<pre><code>posts/            文章，一篇一个 .md
+theme/style.css   全部样式，就这一个文件
+theme/home.js     首页视差
+scene.mjs         黄昏山景，SVG 现画
+about.md          关于页
+site.json         站名、副标题、作者、地址
+build.mjs         生成器，零依赖，Node 18+
+dev.mjs           本地编辑器 + 预览服务，编辑博客.bat 跑的就是它
+docs/             生成出来的网页；别手改，由 build 重建</code></pre>
+<p>还有写字这件事，从日记本搬到网页上，坐下来，写完关灯。</p>
+<p>——先写写，再多看看。</p>
+  </div>
+  <nav class="post-nav"><a href="../index.html">← 回首页</a></nav>
+</article>
+</main>
+<footer class="site">
+  <span>Lilisnore · 2026</span>
+  <span>用一页纸搭的</span>
+</footer>
+</body>
+</html>
