@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OSPF特性小实验 · Putus Blog</title>
-<meta name="description" content="Stage1 topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123 设备接口地址区域备注 R1GE0/0/012.1.1.1/24Area 0 Lo010.1…">
+<meta name="description" content="Stage1 网络配通 topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123 设备接口地址区域备注 R1GE0/0/012.1.1.1/24Area 0 Lo…">
 <meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="../assets/style.css">
 <style>
@@ -38,7 +38,7 @@
     <p class="meta"><time datetime="2026-10-24">2026年10月24日</time></p>
   </header>
   <div class="prose">
-<h2>Stage1</h2>
+<h2>Stage1 网络配通</h2>
 <p>topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123</p>
 <img src="image-20261023174131343.png" alt="image-20261023174131343" style="zoom:66%;" />
 <div class="table-wrap"><table>
@@ -63,7 +63,7 @@
 <li>R3 造一条假外部路由再引入：<br> ip route-static 8.8.8.0 24 NULL0<br> ospf 1<br>  import-route static</li>
 <li><strong>验收</strong>：R1 上能看到 8.8.8.0/24，协议 OSPF，下一跳 12.1.1.2</li>
 </ol>
-<h2>Stage2</h2>
+<h2>Stage2 优先级调整</h2>
 <p> priority 按下面配好，再全部 reset ospf process：</p>
 <p>设备	priority<br>R2	  200<br>R4	  100<br>R3	  1（默认）<br>R5	  1（默认）</p>
 <h4><strong>questions？</strong></h4>
