@@ -1,0 +1,827 @@
+/* ==========================================================
+   Serpent Flame Peaks · 文章页
+   夜读版式：松烟底、骨白、烬红、蛇青、月金。
+   作用域：body.is-post。不改首页，不动已有主题变量。
+   ========================================================== */
+
+/* ---------- 颜料 ---------- */
+
+body.is-post {
+  --sf-bg: #f3eee0;
+  --sf-bg-2: #ebe5d3;
+  --sf-ink: #2a322d;
+  --sf-ink-strong: #17211c;
+  --sf-muted: #6d7165;
+  --sf-faint: #8b8e80;
+  --sf-line: rgba(23, 33, 28, .16);
+  --sf-line-soft: rgba(23, 33, 28, .08);
+  --sf-ember: #a8473c;
+  --sf-ember-soft: rgba(168, 71, 60, .12);
+  --sf-jade: #2f6a5f;
+  --sf-gold: #96702e;
+  --sf-plate: #fbf7eb;
+  --sf-code: #f7f2e4;
+  --sf-grain: .018;
+
+  --sf-serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", Georgia, "STSong", "SimSun", serif;
+  --sf-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --sf-mono: "JetBrains Mono", "Cascadia Mono", "SFMono-Regular", Consolas, "Noto Sans Mono", monospace;
+
+  --sf-read: 760px;
+  --sf-wide: 1000px;
+  --sf-body-size: 18.5px;
+  --sf-body-leading: 2.05;
+  --sf-body-font: var(--sf-serif);
+  --sf-pad: 24px;
+
+  background-color: var(--sf-bg);
+  background-image:
+    radial-gradient(70% 42% at 84% -8%, rgba(47, 106, 95, .07), transparent 70%),
+    radial-gradient(50% 38% at 6% 104%, rgba(168, 71, 60, .05), transparent 70%);
+  background-attachment: fixed;
+  color: var(--sf-ink);
+  font-family: var(--sf-sans);
+}
+
+:root[data-theme="night"] body.is-post {
+  --sf-bg: #0b0e0d;
+  --sf-bg-2: #0e1311;
+  --sf-ink: #d7cfbc;
+  --sf-ink-strong: #f1e9d6;
+  --sf-muted: #8f8a7b;
+  --sf-faint: #6b675c;
+  --sf-line: rgba(233, 224, 203, .15);
+  --sf-line-soft: rgba(233, 224, 203, .07);
+  --sf-ember: #b8543c;
+  --sf-ember-soft: rgba(184, 84, 60, .16);
+  --sf-jade: #6fa898;
+  --sf-gold: #d8b96f;
+  --sf-plate: #0a0d0c;
+  --sf-code: #090c0b;
+  --sf-grain: .028;
+
+  background-image:
+    radial-gradient(70% 42% at 84% -8%, rgba(111, 168, 152, .10), transparent 70%),
+    radial-gradient(50% 38% at 6% 104%, rgba(184, 84, 60, .07), transparent 70%);
+}
+
+body.is-post.ff-kai {
+  --sf-body-font: "KaiTi", "STKaiti", "Kaiti SC", "Kaiti TC", "FangSong", "SimSun", serif;
+}
+
+body.is-post.ff-sans {
+  --sf-body-font: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+}
+
+/* 极薄的一层颗粒，像旧纸 / 底片 */
+body.is-post::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: var(--sf-grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ---------- 页头对齐与留白 ---------- */
+
+body.is-post main {
+  max-width: calc(var(--sf-read) + var(--sf-pad) * 2);
+  margin: 0 auto;
+  padding: 0 var(--sf-pad) 96px;
+}
+
+body.is-post .site,
+body.is-post footer.site {
+  max-width: calc(var(--sf-read) + var(--sf-pad) * 2);
+  padding-left: var(--sf-pad);
+  padding-right: var(--sf-pad);
+}
+
+body.is-post .site {
+  padding-top: 30px;
+}
+
+body.is-post .site .brand {
+  font-family: var(--sf-serif);
+  color: var(--sf-ink-strong);
+  letter-spacing: .02em;
+}
+
+body.is-post .site nav {
+  font-family: var(--sf-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+}
+
+body.is-post .site nav a {
+  color: var(--sf-muted);
+}
+
+body.is-post .site nav a:hover {
+  color: var(--sf-gold);
+}
+
+body.is-post .theme-toggle {
+  border-color: var(--sf-line);
+  color: var(--sf-muted);
+}
+
+body.is-post footer.site {
+  border-top: 1px solid var(--sf-line);
+  color: var(--sf-faint);
+  font-family: var(--sf-mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+}
+
+body.is-post .post {
+  max-width: var(--sf-read);
+  margin: 0 auto;
+  padding-top: 26px;
+}
+
+/* ---------- 阅读进度 ---------- */
+
+.sf-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 120;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--sf-ember), var(--sf-gold));
+  pointer-events: none;
+}
+
+/* ---------- 封面 ---------- */
+
+body.is-post .sf-cover {
+  position: relative;
+  width: 100vw;
+  max-width: none;
+  height: clamp(280px, 40vh, 420px);
+  margin: 0 calc(50% - 50vw);
+  overflow: hidden;
+  background: var(--sf-bg-2);
+}
+
+body.is-post .sf-cover img {
+  position: absolute;
+  inset: -14% 0 auto;
+  width: 100%;
+  height: 128%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  object-fit: cover;
+  object-position: 50% 40%;
+  filter: saturate(.94) brightness(.92);
+  transform: translate3d(0, var(--sf-shift, 0px), 0) scale(1.02);
+  will-change: transform;
+}
+
+:root[data-theme="day"] body.is-post .sf-cover img {
+  filter: saturate(.9) brightness(1.02);
+}
+
+body.is-post .sf-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, var(--sf-bg) 0%, rgba(8, 11, 10, 0) 12%, rgba(8, 11, 10, 0) 56%, var(--sf-bg) 100%),
+    linear-gradient(90deg, rgba(8, 11, 10, .32) 0%, transparent 46%);
+  pointer-events: none;
+}
+
+:root[data-theme="day"] body.is-post .sf-cover::after {
+  background:
+    linear-gradient(180deg, var(--sf-bg) 0%, rgba(243, 238, 224, 0) 10%, rgba(243, 238, 224, 0) 56%, var(--sf-bg) 100%),
+    linear-gradient(90deg, rgba(243, 238, 224, .20) 0%, transparent 42%);
+}
+
+body.is-post .sf-cover__cap {
+  position: absolute;
+  z-index: 1;
+  left: max(24px, calc(50vw - var(--sf-read) / 2));
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sf-mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: .3em;
+  color: rgba(241, 233, 214, .58);
+  text-transform: uppercase;
+}
+
+body.is-post .sf-cover__cap .cn {
+  font-family: var(--sf-serif);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  text-transform: none;
+  opacity: .8;
+}
+
+:root[data-theme="day"] body.is-post .sf-cover__cap {
+  color: rgba(23, 33, 28, .55);
+}
+
+body.is-post .sf-cover__cap::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+  opacity: .6;
+}
+
+/* ---------- 标题 ---------- */
+
+body.is-post .post > header {
+  margin: 0;
+  padding: 54px 0 26px;
+  border-bottom: 1px solid var(--sf-line);
+  position: relative;
+}
+
+body.is-post .post > header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 36px;
+  height: 2px;
+  background: var(--sf-ember);
+}
+
+body.is-post .post h1 {
+  font-family: var(--sf-serif);
+  font-size: clamp(34px, 4.4vw, 52px);
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: .005em;
+  color: var(--sf-ink-strong);
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+
+body.is-post .post .meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--sf-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  letter-spacing: .18em;
+  color: var(--sf-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+body.is-post .post .meta::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--sf-ember);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.sf-meta-dot {
+  color: var(--sf-faint);
+}
+
+/* ---------- 正文 ---------- */
+
+body.is-post .prose {
+  padding-top: 36px;
+  font-family: var(--sf-body-font);
+  font-size: var(--sf-body-size);
+  line-height: var(--sf-body-leading);
+  letter-spacing: .012em;
+  color: var(--sf-ink);
+  font-feature-settings: "palt" 0;
+}
+
+body.is-post .prose p {
+  margin: 0 0 1.2em;
+}
+
+body.is-post .prose > p:first-child {
+  font-size: calc(var(--sf-body-size) + 2px);
+  line-height: 2;
+  color: var(--sf-ink-strong);
+  margin-bottom: 1.5em;
+}
+
+body.is-post .prose strong {
+  color: var(--sf-ink-strong);
+  font-weight: 600;
+}
+
+body.is-post .prose em {
+  font-style: normal;
+  color: var(--sf-jade);
+}
+
+body.is-post .prose a {
+  color: var(--sf-gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(216, 185, 111, .38);
+  padding-bottom: 1px;
+  transition: color .18s, border-color .18s;
+}
+
+body.is-post .prose a:hover {
+  color: var(--sf-ember);
+  border-color: rgba(184, 84, 60, .5);
+}
+
+body.is-post .prose ::selection {
+  background: var(--sf-ember-soft);
+  color: var(--sf-ink-strong);
+}
+
+/* ---------- 章节 ---------- */
+
+body.is-post .prose {
+  counter-reset: sf-sec;
+}
+
+body.is-post .prose > h2:first-child {
+  margin-top: 0;
+}
+
+body.is-post .prose h2 {
+  counter-increment: sf-sec;
+  margin: 3.4em 0 1.05em;
+  padding-top: 26px;
+  border-top: 1px solid var(--sf-line);
+  font-family: var(--sf-serif);
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: .006em;
+  color: var(--sf-ink-strong);
+  scroll-margin-top: 90px;
+}
+
+body.is-post .prose h2::before {
+  content: counter(sf-sec, decimal-leading-zero);
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--sf-mono);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: .3em;
+  color: var(--sf-gold);
+}
+
+body.is-post .prose h3 {
+  margin: 2.5em 0 .65em;
+  font-family: var(--sf-serif);
+  font-size: 20px;
+  line-height: 1.65;
+  font-weight: 600;
+  color: var(--sf-ink-strong);
+}
+
+body.is-post .prose h3::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 14px;
+  background: var(--sf-ember);
+  transform: translateY(-2px) rotate(45deg);
+}
+
+body.is-post .prose h4 {
+  margin: 2.2em 0 .55em;
+  font-family: var(--sf-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--sf-ink-strong);
+}
+
+body.is-post .prose h4::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 12px;
+  background: var(--sf-gold);
+  transform: translateY(-1px) rotate(45deg);
+}
+
+body.is-post .prose h5 {
+  margin: 2.3em 0 .6em;
+  font-family: var(--sf-sans);
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--sf-gold);
+}
+
+body.is-post .prose h5::before {
+  content: "—";
+  margin-right: 10px;
+  color: var(--sf-ember);
+}
+
+body.is-post .prose h6 {
+  margin: 2em 0 .5em;
+  font-family: var(--sf-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: .22em;
+  color: var(--sf-muted);
+}
+
+/* ---------- 列表 ---------- */
+
+body.is-post .prose ul,
+body.is-post .prose ol {
+  margin: 0 0 1.35em;
+  padding-left: 0;
+  list-style: none;
+}
+
+body.is-post .prose li {
+  margin: .55em 0;
+}
+
+body.is-post .prose ul > li {
+  position: relative;
+  padding-left: 1.5em;
+}
+
+body.is-post .prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: .2em;
+  top: .82em;
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--sf-ember);
+  transform: rotate(45deg);
+}
+
+body.is-post .prose ol {
+  counter-reset: sf-li;
+}
+
+body.is-post .prose ol > li {
+  counter-increment: sf-li;
+  position: relative;
+  padding-left: 2.2em;
+}
+
+body.is-post .prose ol > li::before {
+  content: counter(sf-li, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: .55em;
+  font-family: var(--sf-mono);
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: .1em;
+  color: var(--sf-gold);
+}
+
+body.is-post .prose li > ul,
+body.is-post .prose li > ol {
+  margin: .45em 0 .2em;
+}
+
+
+/* 列表项里的多行命令，收成一个行块 */
+body.is-post .prose .sf-li-lines {
+  display: block;
+  margin-top: 7px;
+  font-family: var(--sf-mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: var(--sf-ink);
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* ---------- 引用 ---------- */
+
+body.is-post .prose blockquote {
+  position: relative;
+  margin: 2.6em 0;
+  padding: 1.15em 1.4em 1.15em 1.9em;
+  border-left: 2px solid var(--sf-ember);
+  background: linear-gradient(90deg, var(--sf-ember-soft), transparent 62%);
+  color: var(--sf-ink);
+  font-size: 1.04em;
+  line-height: 1.95;
+}
+
+body.is-post .prose blockquote p {
+  margin: 0;
+}
+
+body.is-post .prose blockquote p + p {
+  margin-top: .8em;
+}
+
+body.is-post .prose blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: .38em;
+  top: -.12em;
+  font-family: var(--sf-serif);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--sf-gold);
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* ---------- 行内代码与代码块 ---------- */
+
+body.is-post .prose code {
+  font-family: var(--sf-mono);
+  font-size: .84em;
+  color: var(--sf-jade);
+  background: rgba(111, 168, 152, .10);
+  border: 1px solid rgba(111, 168, 152, .16);
+  border-radius: 2px;
+  padding: .12em .42em;
+}
+
+body.is-post .prose pre {
+  margin: 2em 0;
+  padding: 18px 22px;
+  background: var(--sf-code);
+  border: 1px solid var(--sf-line);
+  border-left: 2px solid var(--sf-ember);
+  border-radius: 0;
+  overflow-x: auto;
+  line-height: 1.75;
+  tab-size: 2;
+}
+
+body.is-post .prose pre code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--sf-ink);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* 纯文本里用换行写出来的配置 / 示意，自动变成一块“行块” */
+body.is-post .prose p.is-lines {
+  margin: 2em 0;
+  padding: 16px 20px;
+  background: var(--sf-code);
+  border: 1px solid var(--sf-line);
+  border-left: 2px solid var(--sf-ember);
+  font-family: var(--sf-mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: var(--sf-ink);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  tab-size: 4;
+}
+
+/* ---------- 表格 ---------- */
+
+body.is-post .prose .table-wrap {
+  margin: 2.2em 0;
+  overflow-x: auto;
+  border-top: 1px solid var(--sf-gold);
+  border-bottom: 1px solid var(--sf-line);
+}
+
+body.is-post .prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sf-sans);
+  font-size: 14px;
+  line-height: 1.7;
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-ink);
+}
+
+body.is-post .prose th {
+  padding: 12px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--sf-line);
+  background: none;
+  font-family: var(--sf-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-align: left;
+  color: var(--sf-ink);
+  opacity: .62;
+  white-space: nowrap;
+}
+
+body.is-post .prose td {
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--sf-line-soft);
+  vertical-align: top;
+}
+
+body.is-post .prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+body.is-post .prose tbody tr:hover {
+  background: rgba(216, 185, 111, .035);
+}
+
+body.is-post .prose td strong {
+  color: var(--sf-ink-strong);
+}
+
+/* ---------- 图片 ---------- */
+
+body.is-post .prose img {
+  display: block;
+  width: min(var(--sf-wide), calc(100vw - 44px));
+  max-width: none;
+  height: auto;
+  margin: 2.8em 0;
+  margin-left: calc((100% - min(var(--sf-wide), calc(100vw - 44px))) / 2);
+  padding: 11px;
+  background: var(--sf-plate);
+  border: 1px solid var(--sf-line);
+  border-radius: 0;
+  zoom: 1 !important;
+}
+
+:root[data-theme="night"] body.is-post .prose img {
+  filter: brightness(.85) contrast(1.03);
+}
+
+body.is-post .prose figure {
+  margin: 2.8em 0;
+}
+
+body.is-post .prose figure img {
+  margin: 0 auto;
+}
+
+body.is-post .prose figcaption {
+  margin-top: 12px;
+  font-family: var(--sf-mono);
+  font-size: 9.5px;
+  line-height: 1.7;
+  letter-spacing: .16em;
+  color: var(--sf-muted);
+  text-align: center;
+}
+
+/* ---------- 分隔 ---------- */
+
+body.is-post .prose hr {
+  margin: 3.6em 0;
+  border: 0;
+  height: 15px;
+  background: linear-gradient(var(--sf-line), var(--sf-line)) center / 100% 1px no-repeat;
+  position: relative;
+}
+
+body.is-post .prose hr::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  background: var(--sf-bg);
+  border: 1px solid var(--sf-ember);
+  transform: rotate(45deg);
+}
+
+/* ---------- 文末 ---------- */
+
+body.is-post .post-nav {
+  margin-top: 64px;
+  padding-top: 22px;
+  border-top: 1px solid var(--sf-line);
+  font-family: var(--sf-mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+}
+
+body.is-post .post-nav a {
+  color: var(--sf-muted);
+  text-decoration: none;
+}
+
+body.is-post .post-nav a:hover {
+  color: var(--sf-gold);
+}
+
+/* ---------- 窄屏 ---------- */
+
+@media (max-width: 820px) {
+  body.is-post {
+    --sf-pad: 20px;
+  }
+
+  body.is-post main {
+    padding-bottom: 72px;
+  }
+
+  body.is-post .post {
+    padding-top: 10px;
+  }
+
+  body.is-post .sf-cover {
+    height: clamp(240px, 38vh, 340px);
+  }
+
+  body.is-post .post > header {
+    padding-top: 38px;
+  }
+
+  body.is-post .post h1 {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  body.is-post .prose {
+    font-size: var(--sf-body-size);
+    line-height: var(--sf-body-leading);
+    padding-top: 28px;
+  }
+
+  body.is-post .prose > p:first-child {
+    font-size: calc(var(--sf-body-size) + 1px);
+  }
+
+  body.is-post .prose h2 {
+    font-size: 24px;
+  }
+
+  body.is-post .prose img {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  body.is-post .sf-cover__cap {
+    font-size: 8px;
+    letter-spacing: .22em;
+  }
+
+  body.is-post .prose table {
+    font-size: 12.5px;
+  }
+
+  body.is-post .prose th,
+  body.is-post .prose td {
+    padding: 9px 10px;
+  }
+}
+
+/* ---------- 动效与打印 ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-post .sf-cover img {
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media print {
+  body.is-post {
+    background: #fff;
+    color: #000;
+  }
+
+  body.is-post .sf-cover,
+  body.is-post .sf-progress,
+  body.is-post::after {
+    display: none;
+  }
+}

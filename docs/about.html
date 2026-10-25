@@ -6,20 +6,12 @@
 <title>关于 · Putus Blog</title>
 <meta name="description" content="一个人的博客，记一些没地方放的念头。">
 <meta name="color-scheme" content="light dark">
+<script>(function(){try{var d=document.documentElement,s=null;try{s=localStorage.getItem('theme')}catch(e){}if(s!=='day'&&s!=='night')s=d.getAttribute('data-theme');if(s!=='day'&&s!=='night')s=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'night':'day';d.setAttribute('data-theme',s);}catch(e){}})();</script>
 <link rel="stylesheet" href="assets/style.css">
-<style>
-:root {
-  --sky-top: #f9dfc8;
-  --sky-low: #e8a684;
-  --ridge-far: #d9a58c;
-  --ridge-mid: #bd7c63;
-  --ridge-near: #96594a;
-  --ridge-front: #382422;
-  --tree-near: #7d4639;
-  --tree-front: #2f1f1d;
-  --accent: #7d5b43;
-}
-</style>
+<link rel="stylesheet" href="assets/serpent.css">
+<meta name="theme-color" content="#f4f0e1">
+<script src="assets/theme.js" defer></script>
+<script src="assets/serpent.js" defer></script>
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 </head>
@@ -29,14 +21,17 @@
   <nav>
     <a href="index.html">文章</a>
     <a href="about.html">关于</a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到夜晚模式">
+    <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.6"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.4A8.2 8.2 0 0 1 9.6 4a7.6 7.6 0 1 0 10.4 10.4Z"/></svg>
+  </button>
   </nav>
 </header>
 <main>
 <article class="post">
   <header><h1>关于</h1></header>
   <div class="prose">
-<p>为什么又做Blog。<br>1.半个保持持续学习。<br>2.本地笔记库需要筛选。</p>
-<p>写文字的地方。</p>
+<p>为什么又做Blog。<br>1.半个保持持续学习。<br>2.本地笔记库需要筛选。<br>3.本地笔记库需要筛选。</p>
 <p>不保证更新，想起来就写一篇。</p>
 <p>把这里当成一个抽屉：东西放进去，过很久再打开，还能闻见当时的味道。</p>
 <hr>
