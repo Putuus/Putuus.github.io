@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Putus Blog</title>
+<meta name="description" content="一个人的博客，记一些没地方放的念头。">
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var d=document.documentElement,s=null;try{s=localStorage.getItem('theme')}catch(e){}if(s!=='day'&&s!=='night')s=d.getAttribute('data-theme');if(s!=='day'&&s!=='night')s=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'night':'day';d.setAttribute('data-theme',s);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/style.css?v=e1ce7e2d">
+<link rel="stylesheet" href="assets/serpent.css?v=b7005975">
+<meta name="theme-color" content="#f4f0e1">
+<script src="assets/theme.js?v=d5a7d186" defer></script>
+<script src="assets/serpent.js?v=478b2ee1" defer></script>
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <script src="assets/home.js?v=a539e340" defer></script>
+</head>
+<body class="is-home">
+<div class="hero">
+  <div class="scene">
+    <img class="scene__img scene__img--day" src="assets/jade-dragons.jpg" alt="" width="1800" height="1447" decoding="async" fetchpriority="high">
+    <img class="scene__img scene__img--night" src="assets/white-tiger.jpg" alt="" width="1800" height="1367" decoding="async">
+    <button class="scene__orb scene__orb--sun" type="button" data-theme-toggle aria-label="切换到夜晚模式"></button>
+    <button class="scene__orb scene__orb--moon" type="button" data-theme-toggle aria-label="切换到白天模式"></button>
+  </div>
+  <div class="hero__inner">
+    <nav class="hero__nav">
+      <a href="index.html">文章</a>
+      <a href="about.html">关于</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到夜晚模式">
+    <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.6"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.4A8.2 8.2 0 0 1 9.6 4a7.6 7.6 0 1 0 10.4 10.4Z"/></svg>
+  </button>
+    </nav>
+    <div class="hero__card">
+      <p class="hero__eyebrow"></p>
+      <h1 class="hero__title">Putus&#39;Notes</h1>
+      <p class="hero__desc">| 做1万个ollie!! | 午夜忧郁滑手 | (前)忧郁网络工程师 |</p>
+      <a class="hero__btn" href="#posts">抱有期望的等待！</a>
+    </div>
+    <p class="hero__hint"><span>向下滑动</span></p>
+  </div>
+</div>
+<div class="sheet" id="posts">
+  <div class="sheet__inner">
+    <h2 class="sheet__title">最近在写</h2>
+    <ul class="entries">
+  <li class="entry">
+    <a href="posts/ubuntu.html">
+      <time datetime="2026-11-01">2026年11月1日</time>
+      <h2>Ubuntu 无法进入桌面的常见解决方法</h2>
+      <p>常见原因 磁盘占满（开机停在 blocks 几乎占满，进不了系统） 显卡驱动装错或冲突 文件系统挂载错误（新增分区或第二块盘写错了 fstab） 内核升级后驱动模块不匹配 桌面环境…</p>
+    </a>
+  </li>
+  <li class="entry">
+    <a href="posts/post-2026-10-28-alubc.html">
+      <time datetime="2026-10-28">2026年10月28日</time>
+      <h2>关于本站</h2>
+      <p>天天天的博客。 为什么又做博客？1.保持持续学习。2.继续以前没有继续下去的事。3.本地笔记库需要筛选。 唠叨 第一次搭博客是在2022年，那时候刚毕业，挺多东西都刚接触，买VPS…</p>
+    </a>
+  </li>
+  <li class="entry">
+    <a href="posts/ospf.html">
+      <time datetime="2026-10-25">2026年10月25日</time>
+      <h2>OSPF特性小实验</h2>
+      <p>Stage1 网络配通 topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123 设备接口地址区域备注 R1GE0/0/012.1.1.1/24Area 0 Lo…</p>
+    </a>
+  </li>
+    </ul>
+    <div class="sheet__footer">
+      <span class="sheet__sig">Lilisnore · 2026</span>
+      <a href="about.html">关于这个博客</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

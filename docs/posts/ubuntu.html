@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ubuntu 无法进入桌面的常见解决方法 · Putus Blog</title>
+<meta name="description" content="常见原因 磁盘占满（开机停在 blocks 几乎占满，进不了系统） 显卡驱动装错或冲突 文件系统挂载错误（新增分区或第二块盘写错了 fstab） 内核升级后驱动模块不匹配 桌面环境…">
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var d=document.documentElement,s=null;try{s=localStorage.getItem('theme')}catch(e){}if(s!=='day'&&s!=='night')s=d.getAttribute('data-theme');if(s!=='day'&&s!=='night')s=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'night':'day';d.setAttribute('data-theme',s);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/style.css?v=e1ce7e2d">
+<link rel="stylesheet" href="../assets/serpent.css?v=b7005975">
+<meta name="theme-color" content="#f4f0e1">
+<script src="../assets/theme.js?v=d5a7d186" defer></script>
+<script src="../assets/serpent.js?v=478b2ee1" defer></script>
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="is-post">
+<header class="site">
+  <a class="brand" href="../index.html">Putus Blog</a>
+  <nav>
+    <a href="../index.html">文章</a>
+    <a href="../about.html">关于</a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到夜晚模式">
+    <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.6"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.4A8.2 8.2 0 0 1 9.6 4a7.6 7.6 0 1 0 10.4 10.4Z"/></svg>
+  </button>
+  </nav>
+</header>
+<main>
+<article class="post">
+  <figure class="sf-cover">
+    <img src="../assets/serpent-hero.jpg" alt="蛇焰峰：青蛇、赤峰与淡月">
+  </figure>
+  <header>
+    <h1>Ubuntu 无法进入桌面的常见解决方法</h1>
+    <p class="meta"><time datetime="2026-11-01">2026年11月1日</time></p>
+  </header>
+  <div class="prose">
+<h2>常见原因</h2>
+<ul>
+<li>磁盘占满（开机停在 blocks 几乎占满，进不了系统）</li>
+<li>显卡驱动装错或冲突</li>
+<li>文件系统挂载错误（新增分区或第二块盘写错了 fstab）</li>
+<li>内核升级后驱动模块不匹配</li>
+<li>桌面环境损坏</li>
+</ul>
+<blockquote>
+<p>实际原因应想想出问题之前做过什么操作。</p>
+</blockquote>
+<h2>前提：先会进 GRUB 菜单</h2>
+<p>下面的操作几乎都要先到 GRUB 菜单。单系统可以这样进：</p>
+<p>方法一：开机后，在系统即将进入登录界面的阶段按一下 ESC。</p>
+<p>方法二：开机后不停按 ESC，直到进入 grub 命令行，输入 <code>normal</code> 回车；再不停按 ESC 就能回到 grub 菜单。</p>
+<h2>一、磁盘占满</h2>
+<p>通过 GRUB 菜单的 Advanced options for Ubuntu → recovery → root，进入命令行模式：</p>
+<pre><code class="language-bash">df -Th                     # 各分区使用情况
+du -sh ./*                 # 当前目录各文件夹大小
+du --max-depth=1 -h /home  # 按深度查占用，比如 home 目录 2 层</code></pre>
+<p>找到大文件删掉或挪走，空间空出来一般就能正常启动。</p>
+<h2>二、显卡驱动错误</h2>
+<p>同样经 recovery → root 进入命令行，先把装错的驱动卸干净：</p>
+<pre><code class="language-bash">sudo apt-get --purge remove nvidia*
+sudo apt-get --purge remove &quot;*nvidia*&quot;
+sudo apt-get --purge remove &quot;*cublas*&quot; &quot;cuda*&quot;   # --purge 清残留清得更深</code></pre>
+<p>卸载后如果还是进不了桌面，可以在 GRUB 里临时禁用显卡驱动进入：<br>（Linux系统一般默认安装的是开源的nouvea显卡驱动，它与nvidia显卡驱动产生冲突，欲装nvidia必禁nouvea，其次Nvidia驱动默认安装OpenGL桌面，然而这又与GNOME桌面冲突，为了系统不宕机，也需禁用nvidia的OpenGL，过程中需要搭建gcc、kernel等环境。如此，可顺利安装NVIDIA显卡驱动。)</p>
+<ol>
+<li>在 GRUB 菜单选中 Ubuntu，按 <code>e</code>；</li>
+<li>找到 linux 开头那一行，把 <code>quiet splash</code> 删掉，换成 <code>nomodeset</code>；</li>
+<li><code>Ctrl+X</code>（或 F10）保存并继续，就能临时进入桌面。</li>
+</ol>
+<blockquote>
+<p>Linux 一般默认装开源的 nouveau 驱动，它和 N 卡闭源驱动冲突：想装 nvidia 必禁 nouveau。</p>
+</blockquote>
+<p>进桌面后，把 nouveau 拉黑（没有就补上）：</p>
+<pre><code class="language-bash">1.在Grub菜单选项在Ubuntu处，按e，然后找到linux行，删除后面的“-”，并添加nomodeset
+2.然后Ctrl+X（或F10）保存并继续。
+3.经过上述操作可以临时进入到桌面这时重新安装正确的显卡驱动即可。
+4.可以通过cat命令查看末尾是否有相关字段，（已有则忽略，直接到下一步）。若没有添加blacklist可在终端（Terminal）执行以下操作：
+cat &gt;&gt; /etc/modprobe.d/blacklist.conf &lt;&lt;End
+blacklist vga16fb
+blacklist nouveau
+blacklist rivafb
+blacklist rivatv
+blacklist nvidiafb
+End
+
+5.正确安装显卡驱动命令如下：
+CZ@CZ&amp;ZT:/$ sudo apt update
+
+CZ@CZ-ZT:/$ ubuntu-drivers devices
+== /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
+modalias : pci:v000010DEd00001F08sv00001043sd000086F0bc03sc00i00
+vendor   : NVIDIA Corporation
+driver   : nvidia-driver-460 - third-party free
+driver   : nvidia-driver-460-server - distro non-free
+driver   : nvidia-driver-465 - third-party free recommended
+driver   : nvidia-driver-450-server - distro non-free
+driver   : nvidia-driver-418-server - distro non-free
+driver   : xserver-xorg-video-nouveau - distro free builtin
+
+# 推荐465版本（具体根据上文提示：即出现recommended字段版本 免费推荐版）
+ZT@ZT&amp;CZ:/$ sudo apt install nvidia-driver-465</code></pre>
+<h2>三、文件系统挂载错误</h2>
+<p><code>vi /etc/fstab</code>，找到写错的行，用 <code>#</code> 注释掉。正确的挂载写法：</p>
+<pre><code>/dev/sda1   /home/username/data   ext4   defaults   0   0</code></pre>
+<ul>
+<li>第一列：文件系统所在分区路径</li>
+<li>第二列：挂载点</li>
+<li>第三列：文件系统类型</li>
+<li>第四列：挂载参数，defaults 即可</li>
+<li>第五、六列：一般写 0，特殊文件系统才需要改</li>
+</ul>
+<h2>四、内核升级导致驱动不匹配</h2>
+<p>现象：重启后进不了桌面，而且根目录没满。多半是内核升级后，显卡驱动模块和新内核对不上。</p>
+<ol>
+<li>按前面方法进 GRUB 菜单；</li>
+<li>选中 Ubuntu 按 <code>e</code>，linux 行删掉 <code>quiet splash</code> 之后的参数，输入 <code>nomodeset</code>，<code>Ctrl+X</code> 进入；</li>
+<li>查看已装驱动版本：<code>ls /usr/src | grep nvidia</code>；</li>
+<li>重新匹配内核与驱动：<code>sudo dkms install -m nvidia -v &lt;第 3 步看到的版本号&gt;</code>；</li>
+<li><code>reboot</code> 重启测试是否恢复。</li>
+</ol>
+  </div>
+  <nav class="post-nav"><a href="../index.html">← 回首页</a></nav>
+</article>
+</main>
+<footer class="site">
+  <span>Lilisnore · 2026</span>
+  <span>用一页纸搭的</span>
+</footer>
+</body>
+</html>
