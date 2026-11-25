@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OSPF特性小实验 · Putus Blog</title><meta name="description" content="Stage1 网络配通 topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123 设备接口地址区域备注 R1GE0/0/012.1.1.1/24Area 0 Lo…"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#0d0d24"><link rel="canonical" href="https://putuus.github.io/posts/ospf.html"><meta property="og:title" content="OSPF特性小实验 · Putus Blog"><meta property="og:description" content="Stage1 网络配通 topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123 设备接口地址区域备注 R1GE0/0/012.1.1.1/24Area 0 Lo…"><meta property="og:type" content="article"><meta property="og:url" content="https://putuus.github.io/posts/ospf.html"><meta property="article:published_time" content="2026-10-25"><script>
+      (function () {
+        try {
+          var d = document.documentElement;
+          var s = null;
+          try { s = localStorage.getItem('theme'); } catch (e) {}
+          if (s !== 'day' && s !== 'night') s = d.getAttribute('data-theme');
+          if (s !== 'day' && s !== 'night') {
+            s = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'night' : 'day';
+          }
+          d.setAttribute('data-theme', s);
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute('content', s === 'night' ? '#0d0d24' : '#e9e4d6');
+        } catch (e) {}
+      })();
+    </script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="/assets/post.css?v=ede4b51f"><link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><script src="/assets/theme.js?v=76b35699" defer></script></head><body class="is-post hermes-post"><div class="post-progress" aria-hidden="true"><span data-post-progress></span></div><header class="post-header" data-post-header><a class="post-brand" href="/">Putus&#39;Notes</a><nav class="post-header__nav" aria-label="主导航"><a href="/" aria-current="page">文章</a><a href="/about.html">关于</a><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到夜晚模式"><svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.6"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg><svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.4A8.2 8.2 0 0 1 9.6 4a7.6 7.6 0 1 0 10.4 10.4Z"></path></svg></button></nav></header><main class="post-main" id="top"><article class="post-shell"><header class="post-hero"><div class="post-meta"><time datetime="2026-10-25">2026年10月25日</time><span class="post-meta__dot" aria-hidden="true"></span><span>约 2 分钟</span></div><h1>OSPF特性小实验</h1><div class="post-hero__rule" aria-hidden="true"></div></header><details class="post-toc-mobile"><summary>目录</summary><ol><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#stage1-网络配通">Stage1 网络配通</a></li><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#stage2-优先级调整">Stage2 优先级调整</a></li></ol></details><div class="post-grid"><div class="post-prose"><h2 id="stage1-网络配通">Stage1 网络配通</h2>
+<p>topology 实验拓扑沙箱OSPF-001设备密码：ABCabc123</p>
+<img src="image-20261023174131343.png" alt="image-20261023174131343" style="zoom:66%;">
+<table>
+<thead>
+<tr>
+<th>设备</th>
+<th>接口</th>
+<th>地址</th>
+<th>区域</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R1</strong></td>
+<td>GE0/0/0</td>
+<td>12.1.1.1/24</td>
+<td>Area 0</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Lo0</td>
+<td>10.1.1.1/32</td>
+<td>Area 0</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>R2</strong></td>
+<td>GE0/0/0</td>
+<td>12.1.1.2/24</td>
+<td>Area 0</td>
+<td><strong>ABR</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>GE0/0/1</td>
+<td>23.1.1.2/24</td>
+<td>Area 1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Lo0</td>
+<td>10.2.2.2/32</td>
+<td>Area 0</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>R3</strong></td>
+<td>GE0/0/0</td>
+<td>23.1.1.3/24</td>
+<td>Area 1</td>
+<td><strong>ASBR</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>Lo0</td>
+<td>192.168.3.3/32</td>
+<td>Area 1</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>R4</strong></td>
+<td>GE0/0/0</td>
+<td>23.1.1.4/24</td>
+<td>Area 1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Lo0</td>
+<td>192.168.4.4/32</td>
+<td>Area 1</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>R5</strong></td>
+<td>GE0/0/0</td>
+<td>23.1.1.5/24</td>
+<td>Area 1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Lo0</td>
+<td>192.168.5.5/32</td>
+<td>Area 1</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>SW1</strong></td>
+<td>GE0/0/1–4</td>
+<td>不配</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>五台接口 IP + Router-ID</p>
+</li>
+<li>
+<p>OSPF 进程 1，按上表分区域</p>
+</li>
+<li>
+<p>R3 造一条假外部路由再引入：<br>
+ip route-static 8.8.8.0 24 NULL0<br>
+ospf 1<br>
+import-route static</p>
+</li>
+<li>
+<p><strong>验收</strong>：R1 上能看到 8.8.8.0/24，协议 OSPF，下一跳 12.1.1.2</p>
+</li>
+</ol>
+<h2 id="stage2-优先级调整">Stage2 优先级调整</h2>
+<p>priority 按下面配好，再 reset ospf process(R2、R4)：</p>
+<p>设备	priority<br>
+R2	  200<br>
+R4	  100<br>
+R3	  1（默认）<br>
+R5	  1（默认）</p>
+<h4 id="questions"><strong>questions？</strong></h4>
+<p>Q1. 谁是 DR？谁是 BDR？</p>
+<p>Q2. 哪两台之间应该是 2-Way？为什么？</p>
+<p>Q3. 如果现在把 R2 的 priority 改成 0，DR 会变成 R4 吗？——先想清楚再改，OSPF 在这里有个坑。</p>
+<p>答<br>
+<strong>Q1</strong>:OSPF的非抢占特性，在修改R2、R4的优先级时“<strong>重启OSPF进程</strong>”，R3先起<strong>等待40s后成为DR</strong>，R2加入发现 DR 已存在 → 只能争 BDR，R4（100）加入，DR/BDR 都满了 → 成为DROther。</p>
+<p><strong>Q2</strong>：DROthe之间只保持邻居关系（Two-Way），所以不会建立FULL邻接。DROthe只和DR、BDR建立FULL。</p>
+<p>邻接越多，LSA 泛洪越爆炸。DR/BDR 的本质是<strong>把网状改成星型</strong>：</p>
+<p>没有 DR：<br>
+A ── B<br>
+│ ╲╱ │<br>
+│ ╱╲ │<br>
+C ── D</p>
+<p>有 DR/BDR：<br>
+A ──┐<br>
+B ──┼── DR ── BDR<br>
+C ──┘<br>
+(DROther 只跟 DR/BDR 建 Full)</p>
+<p><strong>Q3</strong>：与Q1答案相同，套用OSPF非抢占特性，得出R3为DR，R4为BDR。优先级0是为不参与选举。</p>
+<h5 id="priority-0的实战意义">priority 0的实战意义</h5>
+<p><strong>这是工程上最常用的一个配置。</strong></p>
+<p>场景：</p>
+<ul>
+<li>核心/汇聚层设备当 DR，接入层一律 <code>priority 0</code></li>
+<li>因为接入层设备性能弱、链路不稳，让它当 DR 会导致 LSA 泛洪中断<br>
+interface GigabitEthernet0/0/0<br>
+ospf dr-priority 0</li>
+</ul></div><aside class="post-rail" aria-label="文章目录"><div class="post-rail__sticky"><p class="post-rail__title">目录</p><nav><ol><li class="post-rail__item post-rail__item--2"><a href="#stage1-网络配通" data-post-toc-link>Stage1 网络配通</a></li><li class="post-rail__item post-rail__item--2"><a href="#stage2-优先级调整" data-post-toc-link>Stage2 优先级调整</a></li></ol></nav><a class="post-rail__top" href="#top">回到顶部</a></div></aside></div><nav class="post-siblings" aria-label="文章导航"><a href="/posts/post-2026-10-28-alubc.html" class="post-sibling"><span>上一篇</span><strong>关于本站</strong></a><span class="post-sibling post-sibling--empty"></span></nav></article></main><footer class="post-footer"><a class="post-brand" href="/">Putus&#39;Notes</a><div><a href="/">返回文章</a><span>Lilisnore · 2026</span></div></footer><script>/* Hermes 风格文章页：进度、目录高亮、页眉吸顶。无依赖。 */
+(() => {
+  'use strict';
+
+  const boot = () => {
+    if (!document.body || !document.body.classList.contains('hermes-post')) return;
+
+    const header = document.querySelector('[data-post-header]');
+    const bar = document.querySelector('[data-post-progress]');
+    const links = [...document.querySelectorAll('[data-post-toc-link]')];
+    const headings = [...document.querySelectorAll('.post-prose h2, .post-prose h3')];
+    const byId = new Map(links.map((link) => [link.getAttribute('href')?.slice(1), link]));
+
+    const setActive = () => {
+      if (!headings.length || !links.length) return;
+      let active = null;
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top <= 120) {
+          active = byId.get(heading.id) || active;
+        }
+      }
+      if (!active && window.scrollY < 80) active = links[0];
+      links.forEach((link) => link.classList.toggle('is-active', link === active));
+    };
+
+    const paint = () => {
+      if (header) header.classList.toggle('is-stuck', window.scrollY > 8);
+      if (bar) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const value = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+        bar.style.transform = `scaleX(${value.toFixed(4)})`;
+      }
+      setActive();
+    };
+
+    window.addEventListener('scroll', paint, { passive: true });
+    window.addEventListener('resize', paint);
+    paint();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+})();
+</script></body></html>

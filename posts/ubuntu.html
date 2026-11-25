@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ubuntu 无法进入桌面的常见解决方法 · Putus Blog</title><meta name="description" content="常见原因 磁盘占满（开机停在 blocks 几乎占满，进不了系统） 显卡驱动装错或冲突 文件系统挂载错误（新增分区或第二块盘写错了 fstab） 内核升级后驱动模块不匹配 桌面环境…"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#0d0d24"><link rel="canonical" href="https://putuus.github.io/posts/ubuntu.html"><meta property="og:title" content="Ubuntu 无法进入桌面的常见解决方法 · Putus Blog"><meta property="og:description" content="常见原因 磁盘占满（开机停在 blocks 几乎占满，进不了系统） 显卡驱动装错或冲突 文件系统挂载错误（新增分区或第二块盘写错了 fstab） 内核升级后驱动模块不匹配 桌面环境…"><meta property="og:type" content="article"><meta property="og:url" content="https://putuus.github.io/posts/ubuntu.html"><meta property="article:published_time" content="2026-11-01"><script>
+      (function () {
+        try {
+          var d = document.documentElement;
+          var s = null;
+          try { s = localStorage.getItem('theme'); } catch (e) {}
+          if (s !== 'day' && s !== 'night') s = d.getAttribute('data-theme');
+          if (s !== 'day' && s !== 'night') {
+            s = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'night' : 'day';
+          }
+          d.setAttribute('data-theme', s);
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute('content', s === 'night' ? '#0d0d24' : '#e9e4d6');
+        } catch (e) {}
+      })();
+    </script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="/assets/post.css?v=ede4b51f"><link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><script src="/assets/theme.js?v=76b35699" defer></script></head><body class="is-post hermes-post"><div class="post-progress" aria-hidden="true"><span data-post-progress></span></div><header class="post-header" data-post-header><a class="post-brand" href="/">Putus&#39;Notes</a><nav class="post-header__nav" aria-label="主导航"><a href="/" aria-current="page">文章</a><a href="/about.html">关于</a><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到夜晚模式"><svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.6"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg><svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.4A8.2 8.2 0 0 1 9.6 4a7.6 7.6 0 1 0 10.4 10.4Z"></path></svg></button></nav></header><main class="post-main" id="top"><article class="post-shell"><header class="post-hero"><div class="post-meta"><time datetime="2026-11-01">2026年11月1日</time><span class="post-meta__dot" aria-hidden="true"></span><span>约 4 分钟</span></div><h1>Ubuntu 无法进入桌面的常见解决方法</h1><div class="post-hero__rule" aria-hidden="true"></div></header><details class="post-toc-mobile"><summary>目录</summary><ol><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#常见原因">常见原因</a></li><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#前提先会进-grub-菜单">前提：先会进 GRUB 菜单</a></li><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#一磁盘占满">一、磁盘占满</a></li><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#二显卡驱动错误">二、显卡驱动错误</a></li><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#三文件系统挂载错误">三、文件系统挂载错误</a></li><li class="post-toc-mobile__item post-toc-mobile__item--2"><a href="#四内核升级导致驱动不匹配">四、内核升级导致驱动不匹配</a></li></ol></details><div class="post-grid"><div class="post-prose"><h2 id="常见原因">常见原因</h2>
+<ul>
+<li>磁盘占满（开机停在 blocks 几乎占满，进不了系统）</li>
+<li>显卡驱动装错或冲突</li>
+<li>文件系统挂载错误（新增分区或第二块盘写错了 fstab）</li>
+<li>内核升级后驱动模块不匹配</li>
+<li>桌面环境损坏</li>
+</ul>
+<blockquote>
+<p>实际原因应想想出问题之前做过什么操作。</p>
+</blockquote>
+<h2 id="前提先会进-grub-菜单">前提：先会进 GRUB 菜单</h2>
+<p>下面的操作几乎都要先到 GRUB 菜单。单系统可以这样进：</p>
+<p>方法一：开机后，在系统即将进入登录界面的阶段按一下 ESC。</p>
+<p>方法二：开机后不停按 ESC，直到进入 grub 命令行，输入 <code>normal</code> 回车；再不停按 ESC 就能回到 grub 菜单。</p>
+<h2 id="一磁盘占满">一、磁盘占满</h2>
+<p>通过 GRUB 菜单的 Advanced options for Ubuntu → recovery → root，进入命令行模式：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">df</span><span style="color:#79B8FF"> -Th</span><span style="color:#6A737D">                     # 各分区使用情况</span></span>
+<span class="line"><span style="color:#B392F0">du</span><span style="color:#79B8FF"> -sh</span><span style="color:#9ECBFF"> ./</span><span style="color:#79B8FF">*</span><span style="color:#6A737D">                 # 当前目录各文件夹大小</span></span>
+<span class="line"><span style="color:#B392F0">du</span><span style="color:#79B8FF"> --max-depth=1</span><span style="color:#79B8FF"> -h</span><span style="color:#9ECBFF"> /home</span><span style="color:#6A737D">  # 按深度查占用，比如 home 目录 2 层</span></span></code></pre>
+<p>找到大文件删掉或挪走，空间空出来一般就能正常启动。</p>
+<h2 id="二显卡驱动错误">二、显卡驱动错误</h2>
+<p>同样经 recovery → root 进入命令行，先把装错的驱动卸干净：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> apt-get</span><span style="color:#79B8FF"> --purge</span><span style="color:#9ECBFF"> remove</span><span style="color:#9ECBFF"> nvidia</span><span style="color:#79B8FF">*</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> apt-get</span><span style="color:#79B8FF"> --purge</span><span style="color:#9ECBFF"> remove</span><span style="color:#9ECBFF"> "*nvidia*"</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> apt-get</span><span style="color:#79B8FF"> --purge</span><span style="color:#9ECBFF"> remove</span><span style="color:#9ECBFF"> "*cublas*"</span><span style="color:#9ECBFF"> "cuda*"</span><span style="color:#6A737D">   # --purge 清残留清得更深</span></span></code></pre>
+<p>卸载后如果还是进不了桌面，可以在 GRUB 里临时禁用显卡驱动进入：<br>
+（Linux系统一般默认安装的是开源的nouvea显卡驱动，它与nvidia显卡驱动产生冲突，欲装nvidia必禁nouvea，其次Nvidia驱动默认安装OpenGL桌面，然而这又与GNOME桌面冲突，为了系统不宕机，也需禁用nvidia的OpenGL，过程中需要搭建gcc、kernel等环境。如此，可顺利安装NVIDIA显卡驱动。)</p>
+<ol>
+<li>在 GRUB 菜单选中 Ubuntu，按 <code>e</code>；</li>
+<li>找到 linux 开头那一行，把 <code>quiet splash</code> 删掉，换成 <code>nomodeset</code>；</li>
+<li><code>Ctrl+X</code>（或 F10）保存并继续，就能临时进入桌面。</li>
+</ol>
+<blockquote>
+<p>Linux 一般默认装开源的 nouveau 驱动，它和 N 卡闭源驱动冲突：想装 nvidia 必禁 nouveau。</p>
+</blockquote>
+<p>进桌面后，把 nouveau 拉黑（没有就补上）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">1.在Grub菜单选项在Ubuntu处，按e，然后找到linux行，删除后面的“-”，并添加nomodeset</span></span>
+<span class="line"><span style="color:#B392F0">2.然后Ctrl+X（或F10）保存并继续。</span></span>
+<span class="line"><span style="color:#B392F0">3.经过上述操作可以临时进入到桌面这时重新安装正确的显卡驱动即可。</span></span>
+<span class="line"><span style="color:#B392F0">4.可以通过cat命令查看末尾是否有相关字段，（已有则忽略，直接到下一步）。若没有添加blacklist可在终端（Terminal）执行以下操作：</span></span>
+<span class="line"><span style="color:#B392F0">cat</span><span style="color:#F97583"> >></span><span style="color:#9ECBFF"> /etc/modprobe.d/blacklist.conf</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#9ECBFF">End</span></span>
+<span class="line"><span style="color:#9ECBFF">blacklist vga16fb</span></span>
+<span class="line"><span style="color:#9ECBFF">blacklist nouveau</span></span>
+<span class="line"><span style="color:#9ECBFF">blacklist rivafb</span></span>
+<span class="line"><span style="color:#9ECBFF">blacklist rivatv</span></span>
+<span class="line"><span style="color:#9ECBFF">blacklist nvidiafb</span></span>
+<span class="line"><span style="color:#9ECBFF">End</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">5.正确安装显卡驱动命令如下：</span></span>
+<span class="line"><span style="color:#B392F0">CZ@CZ</span><span style="color:#E1E4E8">&#x26;</span><span style="color:#B392F0">ZT:/$</span><span style="color:#9ECBFF"> sudo</span><span style="color:#9ECBFF"> apt</span><span style="color:#9ECBFF"> update</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">CZ@CZ-ZT:/$</span><span style="color:#9ECBFF"> ubuntu-drivers</span><span style="color:#9ECBFF"> devices</span></span>
+<span class="line"><span style="color:#9ECBFF">==</span><span style="color:#9ECBFF"> /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0</span><span style="color:#9ECBFF"> ==</span></span>
+<span class="line"><span style="color:#B392F0">modalias</span><span style="color:#9ECBFF"> :</span><span style="color:#9ECBFF"> pci:v000010DEd00001F08sv00001043sd000086F0bc03sc00i00</span></span>
+<span class="line"><span style="color:#B392F0">vendor</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> NVIDIA</span><span style="color:#9ECBFF"> Corporation</span></span>
+<span class="line"><span style="color:#B392F0">driver</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> nvidia-driver-460</span><span style="color:#9ECBFF"> -</span><span style="color:#9ECBFF"> third-party</span><span style="color:#9ECBFF"> free</span></span>
+<span class="line"><span style="color:#B392F0">driver</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> nvidia-driver-460-server</span><span style="color:#9ECBFF"> -</span><span style="color:#9ECBFF"> distro</span><span style="color:#9ECBFF"> non-free</span></span>
+<span class="line"><span style="color:#B392F0">driver</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> nvidia-driver-465</span><span style="color:#9ECBFF"> -</span><span style="color:#9ECBFF"> third-party</span><span style="color:#9ECBFF"> free</span><span style="color:#9ECBFF"> recommended</span></span>
+<span class="line"><span style="color:#B392F0">driver</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> nvidia-driver-450-server</span><span style="color:#9ECBFF"> -</span><span style="color:#9ECBFF"> distro</span><span style="color:#9ECBFF"> non-free</span></span>
+<span class="line"><span style="color:#B392F0">driver</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> nvidia-driver-418-server</span><span style="color:#9ECBFF"> -</span><span style="color:#9ECBFF"> distro</span><span style="color:#9ECBFF"> non-free</span></span>
+<span class="line"><span style="color:#B392F0">driver</span><span style="color:#9ECBFF">   :</span><span style="color:#9ECBFF"> xserver-xorg-video-nouveau</span><span style="color:#9ECBFF"> -</span><span style="color:#9ECBFF"> distro</span><span style="color:#9ECBFF"> free</span><span style="color:#9ECBFF"> builtin</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 推荐465版本（具体根据上文提示：即出现recommended字段版本 免费推荐版）</span></span>
+<span class="line"><span style="color:#B392F0">ZT@ZT</span><span style="color:#E1E4E8">&#x26;</span><span style="color:#B392F0">CZ:/$</span><span style="color:#9ECBFF"> sudo</span><span style="color:#9ECBFF"> apt</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> nvidia-driver-465</span></span></code></pre>
+<h2 id="三文件系统挂载错误">三、文件系统挂载错误</h2>
+<p><code>vi /etc/fstab</code>，找到写错的行，用 <code>#</code> 注释掉。正确的挂载写法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>/dev/sda1   /home/username/data   ext4   defaults   0   0</span></span></code></pre>
+<ul>
+<li>第一列：文件系统所在分区路径</li>
+<li>第二列：挂载点</li>
+<li>第三列：文件系统类型</li>
+<li>第四列：挂载参数，defaults 即可</li>
+<li>第五、六列：一般写 0，特殊文件系统才需要改</li>
+</ul>
+<h2 id="四内核升级导致驱动不匹配">四、内核升级导致驱动不匹配</h2>
+<p>现象：重启后进不了桌面，而且根目录没满。多半是内核升级后，显卡驱动模块和新内核对不上。</p>
+<ol>
+<li>按前面方法进 GRUB 菜单；</li>
+<li>选中 Ubuntu 按 <code>e</code>，linux 行删掉 <code>quiet splash</code> 之后的参数，输入 <code>nomodeset</code>，<code>Ctrl+X</code> 进入；</li>
+<li>查看已装驱动版本：<code>ls /usr/src | grep nvidia</code>；</li>
+<li>重新匹配内核与驱动：<code>sudo dkms install -m nvidia -v &#x3C;第 3 步看到的版本号></code>；</li>
+<li><code>reboot</code> 重启测试是否恢复。</li>
+</ol></div><aside class="post-rail" aria-label="文章目录"><div class="post-rail__sticky"><p class="post-rail__title">目录</p><nav><ol><li class="post-rail__item post-rail__item--2"><a href="#常见原因" data-post-toc-link>常见原因</a></li><li class="post-rail__item post-rail__item--2"><a href="#前提先会进-grub-菜单" data-post-toc-link>前提：先会进 GRUB 菜单</a></li><li class="post-rail__item post-rail__item--2"><a href="#一磁盘占满" data-post-toc-link>一、磁盘占满</a></li><li class="post-rail__item post-rail__item--2"><a href="#二显卡驱动错误" data-post-toc-link>二、显卡驱动错误</a></li><li class="post-rail__item post-rail__item--2"><a href="#三文件系统挂载错误" data-post-toc-link>三、文件系统挂载错误</a></li><li class="post-rail__item post-rail__item--2"><a href="#四内核升级导致驱动不匹配" data-post-toc-link>四、内核升级导致驱动不匹配</a></li></ol></nav><a class="post-rail__top" href="#top">回到顶部</a></div></aside></div><nav class="post-siblings" aria-label="文章导航"><span class="post-sibling post-sibling--empty"></span><a href="/posts/post-2026-10-28-alubc.html" class="post-sibling post-sibling--next"><span>下一篇</span><strong>关于本站</strong></a></nav></article></main><footer class="post-footer"><a class="post-brand" href="/">Putus&#39;Notes</a><div><a href="/">返回文章</a><span>Lilisnore · 2026</span></div></footer><script>/* Hermes 风格文章页：进度、目录高亮、页眉吸顶。无依赖。 */
+(() => {
+  'use strict';
+
+  const boot = () => {
+    if (!document.body || !document.body.classList.contains('hermes-post')) return;
+
+    const header = document.querySelector('[data-post-header]');
+    const bar = document.querySelector('[data-post-progress]');
+    const links = [...document.querySelectorAll('[data-post-toc-link]')];
+    const headings = [...document.querySelectorAll('.post-prose h2, .post-prose h3')];
+    const byId = new Map(links.map((link) => [link.getAttribute('href')?.slice(1), link]));
+
+    const setActive = () => {
+      if (!headings.length || !links.length) return;
+      let active = null;
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top <= 120) {
+          active = byId.get(heading.id) || active;
+        }
+      }
+      if (!active && window.scrollY < 80) active = links[0];
+      links.forEach((link) => link.classList.toggle('is-active', link === active));
+    };
+
+    const paint = () => {
+      if (header) header.classList.toggle('is-stuck', window.scrollY > 8);
+      if (bar) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const value = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+        bar.style.transform = `scaleX(${value.toFixed(4)})`;
+      }
+      setActive();
+    };
+
+    window.addEventListener('scroll', paint, { passive: true });
+    window.addEventListener('resize', paint);
+    paint();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+})();
+</script></body></html>

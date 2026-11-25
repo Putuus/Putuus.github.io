@@ -1,0 +1,8 @@
+/* Astro 迁移兼容：组件里的内联脚本/结构不能影响首页 grid 的自动排布。
+   桌面端明确把画放到第二列，手机端仍按单列。 */
+@media (min-width: 1001px) {
+  body.is-home .h-hero__grid > .h-plate {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
